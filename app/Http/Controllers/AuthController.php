@@ -40,7 +40,8 @@ class AuthController extends Controller
             "name" => "required",
             "email"=> "required|unique:users|email",
             "password" => "required|confirmed",
-            "bio" => "required"
+            "bio" => "required", 
+            "image_perfil" => "image"
         ]);
 
         if($validator->fails()){
@@ -48,6 +49,14 @@ class AuthController extends Controller
         }
 
         $user = new User($request->all());
+
+        $file_path = 'files/imagePerfil';
+        $extensionD = $user['image_perfil']->getClientOriginalExtension();
+        $nameFileD = uniqid() . ".{$extensionD}";
+        $uploadD = $user['image_perfil']->storeAs($file_path, $nameFileD);
+
+        $user->image_perfil = $nameFileD;
+
         if($user->save()){
             return response()->json(["message" => "Usuario salvo", "data" => $user->name],200);
         }

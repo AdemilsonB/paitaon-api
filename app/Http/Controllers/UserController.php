@@ -12,11 +12,15 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware("auth:api");
+       $this->middleware("auth:api");
     }
 
     public function me() {
         return response()->json(Auth::guard('api')->user()); //verifica autenticação e obtém uma resposta Json com dados do user;
+    }
+
+    public function list(){
+        return response()->json(User::get());
     }
 
 }

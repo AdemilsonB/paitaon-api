@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -18,7 +19,8 @@ class User extends Authenticatable implements JWTSubject
         "name",
         "email",
         "password",
-        "bio"
+        "bio",
+        "image_perfil"
     ];
 
     protected $hidden = [
@@ -27,6 +29,13 @@ class User extends Authenticatable implements JWTSubject
 
     public function setPasswordAttribute($pass){
         $this->attributes['password'] = Hash::make($pass);
+    }
+
+    public function getImagePerfilAttribute(){
+        $file_path = 'files/imagePerfil/';
+        if(!$this->attributes["image_perfil"]) return "";
+        $url = Storage::url($file_path.$this->attributes["image_perfil"]);
+        return $url;   
     }
 
      /**

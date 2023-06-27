@@ -24,6 +24,7 @@ Route::prefix("auth")->group(function(){
 
 Route::prefix("users")->group(function(){
     Route::get("me",[UserController::class , 'me']);
+    Route::get("",[UserController::class , 'list']);
     Route::post("",[AuthController::class , 'register']);
 });
 
