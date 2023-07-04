@@ -20,6 +20,7 @@ class CreatePostsTable extends Migration
             $table->string("thumbnail")->nullable(true);
             $table->foreignId("user_id")->references("id")->on("users");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

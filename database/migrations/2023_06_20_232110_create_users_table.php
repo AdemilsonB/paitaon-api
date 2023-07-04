@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string("email");
             $table->string("password");
             $table->text("bio");
+            $table->text("image_perfil");
             $table->timestamps();
         });
     }

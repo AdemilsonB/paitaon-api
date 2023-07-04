@@ -31,5 +31,6 @@ Route::prefix("users")->group(function(){
 Route::prefix("posts")->group(function(){
     Route::get("",[PostController::class , 'list']);
     Route::post("",[PostController::class , 'create']);
+    Route::delete("{post}/delete", [PostController::class, 'delete']);
     Route::post("{post}/addComent",[PostController::class,'addComent']);
 });

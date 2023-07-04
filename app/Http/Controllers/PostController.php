@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coments;
 use App\Models\Post;
+use App\Models\Coments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +16,7 @@ class PostController extends Controller
     }
 
     public function list(){
-        return response()->json(Post::get());
+        return response()->json(Post::paginate(1));
     }
 
     public function create(Request $request){
