@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Coments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -16,7 +17,7 @@ class PostController extends Controller
     }
 
     public function list(){
-        return response()->json(Post::paginate(1));
+        return response()->json(Post::paginate(5));
     }
 
     public function create(Request $request){
@@ -52,21 +53,23 @@ class PostController extends Controller
 
     public function delete($id)
     {
-        $datas = Posts::find($id);
+        $datas = Post::find($id);
 
-        $file_pathI = 'files/noticias';
-        if(Storage::exists($file_pathI. '/' . $datas->imagem)) {
-            Storage::delete($file_pathI . '/' . $datas->imagem);
+        if($datas){
+            $file_pathI = 'files/thumbnail';
+            if(Storage::exists($file_pathI. '/' . $datas->thubnail)) {
+                Storage::delete($file_pathI . '/' . $datas->thubnail);
+            }
+        }else{
+            return response()->json(['message' => "Registro não encontrado"], 404);
         }
 
-        $file_pathM = 'files/mp3';
-        if(Storage::exists($file_pathM . '/' . $datas->mp3)) {
-            Storage::delete($file_pathM . '/' . $datas->mp3);
+        if($datas->delete()){
+            return response()->json(["message"=> "Registro deletado com sucesso"],200);
         }
 
-        $datas->delete();
+        return response()->json(["message"=> "Falha na exclusão do registro {{id}}"], 400);
     }
-
 
     public function addComent(Request $request,Post $post){
 
@@ -90,4 +93,20 @@ class PostController extends Controller
 
         return response()->json(["message"=> "Erro ao salvar"],500);
     }
+
+    public function deleteComent($postId, $comentId)
+    {
+        $post = Post::findOrFail($postId);
+        $coment = Coments::findOrFail($comentId);
+
+        // Verificar se o comentário pertence ao post
+        if ($coment->post_id == $post->id) {
+            $coment->delete();
+
+            return response()->json(['message' => 'Comentário excluído com sucesso'], 200);
+        } else {
+            return response()->json(['message' => 'Comentário não encontrado nesse post'], 404);
+        }
+    }
+
 }

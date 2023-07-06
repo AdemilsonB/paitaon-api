@@ -23,7 +23,7 @@ class PostSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             Post::create([
                 'user_id' => $faker->randomElement($userIds), // Obtenha um ID de usuário aleatório
-                'title' => $faker->title,
+                'title' => $faker->text(10),
                 'body' => $faker->text,
             ]);
         }

@@ -17,20 +17,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Routes to login and logout in the user 
 Route::prefix("auth")->group(function(){
     Route::post("login", [AuthController::class, "login"]);
     Route::post("logout", [AuthController::class, "logout"]);
 });
 
+//Routes to insert user and view datas
 Route::prefix("users")->group(function(){
     Route::get("me",[UserController::class , 'me']);
     Route::get("",[UserController::class , 'list']);
     Route::post("",[AuthController::class , 'register']);
 });
 
+//Routes to Posts and Coments
 Route::prefix("posts")->group(function(){
     Route::get("",[PostController::class , 'list']);
     Route::post("",[PostController::class , 'create']);
-    Route::delete("{post}/delete", [PostController::class, 'delete']);
+    Route::delete("/{id}", [PostController::class, 'delete']);
     Route::post("{post}/addComent",[PostController::class,'addComent']);
+    Route::delete("{postId}/deleteComent/{comentId}",[PostController::class,'deleteComent']);
 });
