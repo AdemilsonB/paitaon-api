@@ -36,6 +36,7 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
+
         $validator = Validator::make($request->all(),[
             "name" => "required",
             "email"=> "required|unique:users|email",
@@ -51,9 +52,10 @@ class AuthController extends Controller
         $user = new User($request->all());
 
         $file_path = 'files/imagePerfil';
-        $extensionD = $user['image_perfil']->getClientOriginalExtension();
+        $extensionD = $request->all()['image_perfil']->getClientOriginalExtension();
         $nameFileD = uniqid() . ".{$extensionD}";
-        $uploadD = $user['image_perfil']->storeAs($file_path, $nameFileD);
+        
+        $uploadD = $request->all()['image_perfil']->storeAs($file_path, $nameFileD);
 
         $user->image_perfil = $nameFileD;
 
