@@ -6,6 +6,7 @@ use App\Helper\ResponseHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
@@ -64,6 +65,26 @@ class AuthController extends Controller
         }
 
         return response()->json(["message"=> "Erro ao salvar"],500);
+    }
+
+    public function delete($id)
+    {
+        $datas = User::find($id);
+
+        if($datas){
+            $file_pathI = 'files/image_perfil';
+            if(Storage::exists($file_pathI. '/' . $datas->image_perfil)) {
+                Storage::delete($file_pathI . '/' . $datas->image_perfil);
+            }
+        }else{
+            return response()->json(['message' => "Usuário não encontrado"], 404);
+        }
+
+        if($datas->delete()){
+            return response()->json(["message"=> "Usuário deletado com sucesso"],200);
+        }
+
+        return response()->json(["message"=> "Falha na exclusão do usuário"], 400);
     }
 
     public function logout()

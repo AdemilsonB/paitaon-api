@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->text("bio");
             $table->text("image_perfil");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

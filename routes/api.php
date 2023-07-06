@@ -28,6 +28,7 @@ Route::prefix("users")->group(function(){
     Route::get("me",[UserController::class , 'me']);
     Route::get("",[UserController::class , 'list']);
     Route::post("",[AuthController::class , 'register']);
+    Route::delete("/{id}", [AuthController::class, 'delete']);
 });
 
 //Routes to Posts and Coments
