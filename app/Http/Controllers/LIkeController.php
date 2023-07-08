@@ -56,4 +56,22 @@ class LikeController extends Controller
 
         return response()->json(['message' => 'Dislike adicionado com sucesso'], 200);
     }
+
+    public function countLikes($id)
+    {
+        $likesCount = Like::where('post_id', $id)
+            ->where('type', 'like')
+            ->count();
+
+        return response()->json(['message' => 'Likes', "quantidade" => $likesCount], 200);
+    }
+
+    public function countDislikes($id)
+    {
+        $dislikesCount = Like::where('post_id', $id)
+            ->where('type', 'dislike')
+            ->count();
+
+        return response()->json(['message' => 'Dislikes', "quantidade" => $dislikesCount], 200);
+    }
 }

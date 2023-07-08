@@ -42,13 +42,12 @@ Route::prefix("posts")->group(function(){
 
     Route::post("{post}/addComent", [PostController::class,'addComent']);
     Route::delete("{postId}/deleteComent/{comentId}", [PostController::class,'deleteComent']);
-
-    // Route::post("/{id}/like", [LikeController::class, 'like']);
-    // Route::post("/{id}/dislike", [LikeController::class, 'dislike']);
 });
 
 //Routes add Likes and Dislikes in Post
 Route::prefix("likes")->group(function(){
     Route::post("/{id}/like", [LikeController::class, 'like']);
     Route::post("/{id}/dislike", [LikeController::class, 'dislike']);
+    Route::post("/{id}/countLikes", [LikeController::class, 'countLikes']);
+    Route::post("/{id}/countDislikes", [LikeController::class, 'countDislikes']);
 });
