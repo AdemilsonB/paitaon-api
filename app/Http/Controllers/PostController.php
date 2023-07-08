@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Coments;
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -38,7 +39,7 @@ class PostController extends Controller
         $file_path = 'files/thumbnail';
         $extensionD = $request->all()['thumbnail']->getClientOriginalExtension();
         $nameFileD = uniqid() . ".{$extensionD}";
-        
+
         $uploadD = $request->all()['thumbnail']->storeAs($file_path, $nameFileD);
 
         $post->thumbnail = $nameFileD;
@@ -49,6 +50,29 @@ class PostController extends Controller
         }
 
         return response()->json(["message"=> "Erro ao salvar"],500);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->all();
+
+        if($data){
+            $file_path = 'files/thumbnail';
+            if ($request->hasFile('thumbnail')) {
+                $extension = $request->all()('thumbnail')->getClientOriginalExtension();
+                $nameFile = uniqid() . ".{$extension}";
+                $request->all()('thumbnail')->storeAs($file_path, $nameFile);
+                $data['thumbnail'] = $nameFile;
+            }
+
+            $user = Post::find($id);
+            $user->update($data);
+
+            return response()->json(['message' => "Registro editado com sucesso"], 200);
+        }
+
+        return response()->json(["message" => "Registro não encontrado"], 404);
+
     }
 
     public function delete($id)

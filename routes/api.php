@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -17,25 +18,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Routes to login and logout in the user 
+//Routes to login and logout in the user
 Route::prefix("auth")->group(function(){
     Route::post("login", [AuthController::class, "login"]);
     Route::post("logout", [AuthController::class, "logout"]);
 });
 
 //Routes to insert user and view datas
-Route::prefix("users")->group(function(){
-    Route::get("me",[UserController::class , 'me']);
-    Route::get("",[UserController::class , 'list']);
-    Route::post("",[AuthController::class , 'register']);
+Route::prefix("users")->group(function () {
+    Route::get("", [UserController::class , 'list']);
+    Route::get("me", [UserController::class , 'me']);
+    Route::post("", [AuthController::class , 'register']);
+    Route::put("/{id}", [AuthController::class, 'update']);
     Route::delete("/{id}", [AuthController::class, 'delete']);
 });
 
 //Routes to Posts and Coments
 Route::prefix("posts")->group(function(){
-    Route::get("",[PostController::class , 'list']);
-    Route::post("",[PostController::class , 'create']);
+    Route::get("", [PostController::class , 'list']);
+    Route::post("", [PostController::class , 'create']);
+    Route::put("/{id}", [PostController::class, 'update']);
     Route::delete("/{id}", [PostController::class, 'delete']);
-    Route::post("{post}/addComent",[PostController::class,'addComent']);
-    Route::delete("{postId}/deleteComent/{comentId}",[PostController::class,'deleteComent']);
+
+    Route::post("{post}/addComent", [PostController::class,'addComent']);
+    Route::delete("{postId}/deleteComent/{comentId}", [PostController::class,'deleteComent']);
+
+    // Route::post("/{id}/like", [LikeController::class, 'like']);
+    // Route::post("/{id}/dislike", [LikeController::class, 'dislike']);
+});
+
+//Routes add Likes and Dislikes in Post
+Route::prefix("likes")->group(function(){
+    Route::post("/{id}/like", [LikeController::class, 'like']);
+    Route::post("/{id}/dislike", [LikeController::class, 'dislike']);
 });

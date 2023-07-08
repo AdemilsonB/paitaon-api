@@ -42,7 +42,7 @@ class AuthController extends Controller
             "name" => "required",
             "email"=> "required|unique:users|email",
             "password" => "required|confirmed",
-            "bio" => "required", 
+            "bio" => "required",
             "image_perfil" => "image"
         ]);
 
@@ -55,7 +55,7 @@ class AuthController extends Controller
         $file_path = 'files/imagePerfil';
         $extensionD = $request->all()['image_perfil']->getClientOriginalExtension();
         $nameFileD = uniqid() . ".{$extensionD}";
-        
+
         $uploadD = $request->all()['image_perfil']->storeAs($file_path, $nameFileD);
 
         $user->image_perfil = $nameFileD;
@@ -65,6 +65,29 @@ class AuthController extends Controller
         }
 
         return response()->json(["message"=> "Erro ao salvar"],500);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->all();
+
+        if($data){
+            $file_path = 'files/image_perfil';
+            if ($request->hasFile('image_perfil')) {
+                $extension = $request->all()('image_perfil')->getClientOriginalExtension();
+                $nameFile = uniqid() . ".{$extension}";
+                $request->all()('image_perfil')->storeAs($file_path, $nameFile);
+                $data['image_perfil'] = $nameFile;
+            }
+
+            $user = User::find($id);
+            $user->update($data);
+
+            return response()->json(['message' => "Usuário editado com sucesso"], 200);
+        }
+
+        return response()->json(["message" => "Usuário não encontrado"], 404);
+
     }
 
     public function delete($id)
