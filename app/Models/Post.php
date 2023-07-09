@@ -39,5 +39,13 @@ class Post extends Model
         return $this->coments()->get("message");
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'post_id');
+    }
+
+    public function getLikesAttribute(){
+        return $this->likes()->get("message");
+    }
 
 }

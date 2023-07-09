@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:api");
+    }
+
     public function like($id)
     {
         $post = Post::findOrFail($id);
@@ -48,11 +53,11 @@ class LikeController extends Controller
             return response()->json(['message' => 'Dislike removido com sucesso'], 200);
         }
 
-        $like = new Like();
-        $like->post_id = $post->id;
-        $like->user_id = $user->id;
-        $like->type = 'like';
-        $like->save();
+        $dislike = new Like();
+        $dislike->post_id = $post->id;
+        $dislike->user_id = $user->id;
+        $dislike->type = 'dislike';
+        $dislike->save();
 
         return response()->json(['message' => 'Dislike adicionado com sucesso'], 200);
     }

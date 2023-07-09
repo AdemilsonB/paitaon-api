@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Models\Followers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -50,4 +52,11 @@ Route::prefix("likes")->group(function(){
     Route::post("/{id}/dislike", [LikeController::class, 'dislike']);
     Route::post("/{id}/countLikes", [LikeController::class, 'countLikes']);
     Route::post("/{id}/countDislikes", [LikeController::class, 'countDislikes']);
+});
+
+//Routes to Follower
+Route::prefix("follower")->group(function(){
+    route::get('', [FollowersController::class, 'countFollowers']);
+    Route::post("/{id}/follow", [FollowersController::class, 'follow']);
+    Route::post("/{id}/unfollow", [FollowersController::class, 'unfollow']);
 });

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Models;
-namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -29,6 +28,11 @@ class User extends Authenticatable implements JWTSubject
         "password"
     ];
 
+    public function followers()
+    {
+        return $this->hasMany(Followers::class, 'user_id');
+    }
+
     public function setPasswordAttribute($pass){
         $this->attributes['password'] = Hash::make($pass);
     }
@@ -37,7 +41,7 @@ class User extends Authenticatable implements JWTSubject
         $file_path = 'files/imagePerfil/';
         if(!$this->attributes["image_perfil"]) return "";
         $url = Storage::url($file_path.$this->attributes["image_perfil"]);
-        return $url;   
+        return $url;
     }
 
      /**
