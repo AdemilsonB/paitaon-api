@@ -69,10 +69,10 @@ class FollowersController extends Controller
         $user = Auth::user();
 
         $followers = Followers::where('follower_id', $user->id)
-            ->leftJoin('users', 'users.id', '=', 'followers.user_id')
-            ->select('followers.user_id')
+            ->leftjoin('users', 'users.id', '=', 'users.user_id')
             ->get();
 
-        return response()->json(['Seguidores' =>  $followers], 200);
+        return response()->json(['list' => $followers], 200);
+
     }
 }

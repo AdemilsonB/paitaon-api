@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             // UserSeeder::class,
             // PostSeeder::class
             // ComentsSeeder::class,
-            FollowersSeeder::class
+            // FollowersSeeder::class
         ]);
     }
 }

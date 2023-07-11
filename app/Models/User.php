@@ -24,13 +24,19 @@ class User extends Authenticatable implements JWTSubject
         "image_perfil"
     ];
 
+
     protected $hidden = [
         "password"
     ];
 
     public function followers()
     {
-        return $this->hasMany(Followers::class, 'user_id');
+        return $this->belongsTo(User::class, 'followers', 'user_id', 'follower_id');
+    }
+
+    public function following()
+    {
+        return $this->belongsTo(User::class, 'followers', 'follower_id', 'user_id');
     }
 
     public function setPasswordAttribute($pass){

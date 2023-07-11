@@ -14,6 +14,22 @@ class Followers extends Model
         'follower_id'
     ];
 
+    protected $appends = [
+        "fallower"
+    ];
+
+    protected $hidden = [
+        "user_id",
+        "follower_id",
+        "created_at",
+        "updated_at",
+        "id"
+    ];
+
+    public function getFallowerAttribute(){
+        return User::find($this->attributes['user_id']);  
+    }
+
     public function post()
     {
         return $this->hasMany(User::class);
