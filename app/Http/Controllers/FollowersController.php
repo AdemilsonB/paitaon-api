@@ -64,4 +64,15 @@ class FollowersController extends Controller
 
         return response()->json(['message' => 'Quantidade de seguidores', 'quantidade' => $followers], 200);
     }
+
+    public function listFollowers(){
+        $user = Auth::user();
+
+        $followers = Followers::where('follower_id', $user->id)
+            ->leftJoin('users', 'users.id', '=', 'followers.user_id')
+            ->select('followers.user_id')
+            ->get();
+
+        return response()->json(['Seguidores' =>  $followers], 200);
+    }
 }

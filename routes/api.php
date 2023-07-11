@@ -57,6 +57,7 @@ Route::prefix("likes")->group(function(){
 //Routes to Follower
 Route::prefix("follower")->group(function(){
     route::get('', [FollowersController::class, 'countFollowers']);
+    Route::get('/listFollowers', [FollowersController::class, 'listFollowers']);
     Route::post("/{id}/follow", [FollowersController::class, 'follow']);
     Route::post("/{id}/unfollow", [FollowersController::class, 'unfollow']);
 });

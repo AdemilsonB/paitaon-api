@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Post;
 use App\Models\User;
-use App\Models\Coments;
-use Faker\Factory as Faker;
+use App\Models\Followers;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 
-class ComentsSeeder extends Seeder
+class FollowersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -20,13 +20,12 @@ class ComentsSeeder extends Seeder
         $faker = Faker::create();
 
         $userIds = User::pluck('id')->all();
-        $postIds = Post::pluck('id')->all();
+        $followerIds = 13; // User::pluck('id')->all();
 
         for ($i = 0; $i < 10; $i++) {
-            Coments::create([
+            Followers::create([
                 'user_id' => $faker->randomElement($userIds),
-                'post_id' => $faker->randomElement($postIds),
-                'message' => $faker->text
+                'follower_id' => $followerIds // $faker->randomElement($followerIds),
             ]);
         }
     }
