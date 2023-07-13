@@ -50,6 +50,19 @@ class User extends Authenticatable implements JWTSubject
         return $url;
     }
 
+    public function deleteImage(){
+        $file_path = 'files/imagePerfil/';
+        $image = $file_path.$this->attributes["image_perfil"];
+        if(Storage::exists($image)){
+            if(Storage::delete($image)){
+                $this->update(["image_perfil" => '']);
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
      /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

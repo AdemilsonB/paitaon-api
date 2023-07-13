@@ -95,18 +95,12 @@ class AuthController extends Controller
         $datas = User::find($id);
 
         if($datas){
-            $file_pathI = 'files/imagePerfil';
-            dd(($datas->image_perfil));
-            if(Storage::exists($file_pathI. '' . $datas->image_perfil)) {
-                dd($datas->image_perfil);
-                Storage::delete($file_pathI . '' . $datas->image_perfil);
-                return response()->json(['message' => 'imagem deletada'], 200);
-            }
+            if($datas->deleteImage());
         }else{
             return response()->json(['message' => "Usuário não encontrado"], 404);
         }
 
-        dd($datas);
+        // dd($datas);
 
 
         if($datas->delete()){
