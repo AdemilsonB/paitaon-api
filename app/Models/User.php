@@ -16,6 +16,8 @@ class User extends Authenticatable implements JWTSubject
     use HasFactory;
     use SoftDeletes;
 
+    const FILE_PATH = "files/imagePerfil";
+
     protected $fillable = [
         "name",
         "email",
@@ -44,15 +46,15 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function getImagePerfilAttribute(){
-        $file_path = 'files/imagePerfil/';
+        
         if(!$this->attributes["image_perfil"]) return "";
-        $url = Storage::url($file_path.$this->attributes["image_perfil"]);
+        $url = Storage::url(self::FILE_PATH.$this->attributes["image_perfil"]);
         return $url;
     }
 
     public function deleteImage(){
-        $file_path = 'files/imagePerfil/';
-        $image = $file_path.$this->attributes["image_perfil"];
+       
+        $image = self::FILE_PATH.$this->attributes["image_perfil"];
         if(Storage::exists($image)){
             if(Storage::delete($image)){
                 $this->update(["image_perfil" => '']);
