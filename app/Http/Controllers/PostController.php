@@ -40,12 +40,12 @@ class PostController extends Controller
         $extensionD = $request->all()['thumbnail']->getClientOriginalExtension();
         $nameFileD = uniqid() . ".{$extensionD}";
 
-        $uploadD = $request->all()['thumbnail']->storeAs($file_path, $nameFileD);
-
         $post->thumbnail = $nameFileD;
 
         $post->creator()->associate($user);
         if($post->save()){
+            $uploadD = $request->all()['thumbnail']->storeAs($file_path, $nameFileD);
+
             return response()->json(["message" => "Post salvo", "data" => $post],200);
         }
 

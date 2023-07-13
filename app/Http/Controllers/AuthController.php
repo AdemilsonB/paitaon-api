@@ -56,11 +56,11 @@ class AuthController extends Controller
         $extensionD = $request->all()['image_perfil']->getClientOriginalExtension();
         $nameFileD = uniqid() . ".{$extensionD}";
 
-        $uploadD = $request->all()['image_perfil']->storeAs($file_path, $nameFileD);
-
         $user->image_perfil = $nameFileD;
 
         if($user->save()){
+            $uploadD = $request->all()['image_perfil']->storeAs($file_path, $nameFileD);
+
             return response()->json(["message" => "Usuario salvo", "data" => $user->name],200);
         }
 
@@ -95,13 +95,19 @@ class AuthController extends Controller
         $datas = User::find($id);
 
         if($datas){
-            $file_pathI = 'files/image_perfil';
-            if(Storage::exists($file_pathI. '/' . $datas->image_perfil)) {
-                Storage::delete($file_pathI . '/' . $datas->image_perfil);
+            $file_pathI = 'files/imagePerfil';
+            dd(($datas->image_perfil));
+            if(Storage::exists($file_pathI. '' . $datas->image_perfil)) {
+                dd($datas->image_perfil);
+                Storage::delete($file_pathI . '' . $datas->image_perfil);
+                return response()->json(['message' => 'imagem deletada'], 200);
             }
         }else{
             return response()->json(['message' => "Usuário não encontrado"], 404);
         }
+
+        dd($datas);
+
 
         if($datas->delete()){
             return response()->json(["message"=> "Usuário deletado com sucesso"],200);

@@ -17,7 +17,7 @@ class Likes extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('post_id')->constrained('posts');
-            $table->enum('type', ['like', 'dislike']);
+            $table->enum('type', ['L', 'D']); //L = Like --- D = Dislike
             $table->timestamps();
         });
     }

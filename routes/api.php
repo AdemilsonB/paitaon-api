@@ -48,16 +48,17 @@ Route::prefix("posts")->group(function(){
 
 //Routes add Likes and Dislikes in Post
 Route::prefix("likes")->group(function(){
-    Route::post("/{id}/like", [LikeController::class, 'like']);
-    Route::post("/{id}/dislike", [LikeController::class, 'dislike']);
-    Route::post("/{id}/countLikes", [LikeController::class, 'countLikes']);
-    Route::post("/{id}/countDislikes", [LikeController::class, 'countDislikes']);
+    Route::post("/like/{id}", [LikeController::class, 'like']);
+    Route::post("/dislike/{id}", [LikeController::class, 'dislike']);
+    Route::post("/countLikes/{id}", [LikeController::class, 'countLikes']);
+    Route::post("/countDislikes/{id}", [LikeController::class, 'countDislikes']);
 });
 
 //Routes to Follower
 Route::prefix("follower")->group(function(){
-    route::get('', [FollowersController::class, 'countFollowers']);
+    Route::get('', [FollowersController::class, 'countFollowers']);
     Route::get('/listFollowers', [FollowersController::class, 'listFollowers']);
-    Route::post("/{id}/follow", [FollowersController::class, 'follow']);
-    Route::post("/{id}/unfollow", [FollowersController::class, 'unfollow']);
+    Route::get('/listFollowing', [FollowersController::class, 'listFollowing']);
+    Route::post("/follow/{id}", [FollowersController::class, 'follow']);
+    Route::post("/unfollow/{id}", [FollowersController::class, 'unfollow']);
 });

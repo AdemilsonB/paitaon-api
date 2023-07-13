@@ -32,7 +32,7 @@ class LikeController extends Controller
         $like = new Like();
         $like->post_id = $post->id;
         $like->user_id = $user->id;
-        $like->type = 'like';
+        $like->type = 'L'; // like
         $like->save();
 
         return response()->json(['message' => 'Like adicionado com sucesso'], 200);
@@ -56,7 +56,7 @@ class LikeController extends Controller
         $dislike = new Like();
         $dislike->post_id = $post->id;
         $dislike->user_id = $user->id;
-        $dislike->type = 'dislike';
+        $dislike->type = 'D'; // dislike
         $dislike->save();
 
         return response()->json(['message' => 'Dislike adicionado com sucesso'], 200);
@@ -65,7 +65,7 @@ class LikeController extends Controller
     public function countLikes($id)
     {
         $likesCount = Like::where('post_id', $id)
-            ->where('type', 'like')
+            ->where('type', 'L')
             ->count();
 
         return response()->json(['message' => 'Likes', "quantidade" => $likesCount], 200);
@@ -74,7 +74,7 @@ class LikeController extends Controller
     public function countDislikes($id)
     {
         $dislikesCount = Like::where('post_id', $id)
-            ->where('type', 'dislike')
+            ->where('type', 'D')
             ->count();
 
         return response()->json(['message' => 'Dislikes', "quantidade" => $dislikesCount], 200);
