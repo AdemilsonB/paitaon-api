@@ -5,11 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    const FILE_PATH = "files/thumbnail";
 
     protected $fillable = [
         "title",
@@ -48,4 +51,19 @@ class Post extends Model
         return $this->likes()->get("message");
     }
 
+    public function getThumbnailAttribute(){
+        if(!$this->attributes["thumbnail"]) return "";
+        $url = Storage::url(self::FILE_PATH.$this->attributes["thumbnail"]);
+        return $url;
+    }
+
+    public function deleteThumbnail(){
+        $image = self::FILE_PATH.$this->attributes["thumbnail"];
+        if(Storage::exists($image)){
+            if(Storage::delete($image)){
+                $this->update(["thumbnail" => '']);
+                return true;
+            }
+        }
+    }
 }

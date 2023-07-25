@@ -80,10 +80,7 @@ class PostController extends Controller
         $datas = Post::find($id);
 
         if($datas){
-            $file_pathI = 'files/thumbnail';
-            if(Storage::exists($file_pathI. '/' . $datas->thubnail)) {
-                Storage::delete($file_pathI . '/' . $datas->thubnail);
-            }
+            if($datas->deleteThumbnail());
         }else{
             return response()->json(['message' => "Registro não encontrado"], 404);
         }

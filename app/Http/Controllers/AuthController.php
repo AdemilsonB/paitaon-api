@@ -100,9 +100,6 @@ class AuthController extends Controller
             return response()->json(['message' => "Usuário não encontrado"], 404);
         }
 
-        // dd($datas);
-
-
         if($datas->delete()){
             return response()->json(["message"=> "Usuário deletado com sucesso"],200);
         }
