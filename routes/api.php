@@ -30,9 +30,9 @@ Route::prefix("auth")->group(function(){
 Route::prefix("users")->group(function () {
     Route::get("", [UserController::class, 'list']);
     Route::get("me", [UserController::class, 'me']);
-    Route::post("", [AuthController::class, 'register']);
-    Route::put("/{id}", [AuthController::class, 'update']);
-    Route::delete("/{id}", [AuthController::class, 'delete']);
+    Route::post("", [UserController::class, 'register']);
+    Route::put("/{id}", [UserController::class, 'update']);
+    Route::delete("/{id}", [UserController::class, 'delete']);
 });
 
 //POST

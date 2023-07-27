@@ -4,21 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Followers;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FollowersController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth:api');
     }
 
-    public function follow($id)
-    {
-        $follower = User::findOrFail($id);
-
+    public function follow($id) {
         $user = Auth::user();
+        $follower = User::findOrFail($id);
 
         $existingFollow = Followers::where('user_id', $user->id)
             ->where('follower_id', $follower->id)
@@ -37,11 +33,9 @@ class FollowersController extends Controller
         return response()->json(['message' => 'Você começou a seguir', 'user' => $user->name]);
     }
 
-    public function unfollow($id)
-    {
-        $follower = User::findOrFail($id);
-
+    public function unfollow($id) {
         $user = Auth::user();
+        $follower = User::findOrFail($id);
 
         $existingFollow = Followers::where('user_id', $user->id)
             ->where('follower_id', $follower->id)
@@ -55,8 +49,7 @@ class FollowersController extends Controller
         return response()->json(['message' => 'Você não segue este usuário'], 400);
     }
 
-    public function countFollowers()
-    {
+    public function countFollowers() {
         $user = Auth::user();
 
         $followers = Followers::where('follower_id', $user->id)
@@ -65,17 +58,16 @@ class FollowersController extends Controller
         return response()->json(['message' => 'Quantidade de seguidores', 'quantidade' => $followers], 200);
     }
 
-    public function listFollowers(){
+    public function listFollowers() {
         $user = Auth::user();
-
         $followers = Followers::where('follower_id',$user->id)->get();
 
         return response()->json(['followers' => $followers], 200);
     }
 
-    public function listFollowing(){
+    public function listFollowing() {
         $user = Auth::user();
-
+        
         $following = Followers::where('user_id',$user->id)->get();
 
         return response()->json(['followings' => $following], 200);

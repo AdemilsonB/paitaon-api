@@ -10,24 +10,22 @@ use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware("auth:api");
     }
 
-    public function list(){
-        return response()->json(Post::paginate(5));
+    public function list() {
+        return response()->json(Post::paginate(10));
     }
 
-    public function create(Request $request){
-
+    public function create(Request $request) {
         $validator = Validator::make($request->all(),[
             "title" => "required|unique:posts",
             "body" => "required",
             "thumbnail" => "image"
         ]);
 
-        if($validator->fails()){
+        if($validator->fails()) {
             return response()->json($validator->errors(),403);
         }
 
@@ -50,11 +48,13 @@ class PostController extends Controller
         return response()->json(["message"=> "Erro ao salvar"],500);
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $data = $request->all();
+        $post = Post::find($id);
 
         if($data){
+            $post->deleteThumbnail();
+
             $file_path = 'files/thumbnail';
             if ($request->hasFile('thumbnail')) {
                 $extension = $request->all()('thumbnail')->getClientOriginalExtension();
@@ -63,8 +63,7 @@ class PostController extends Controller
                 $data['thumbnail'] = $nameFile;
             }
 
-            $user = Post::find($id);
-            $user->update($data);
+            $post->update($data);
 
             return response()->json(['message' => "Registro editado com sucesso"], 200);
         }
@@ -73,8 +72,7 @@ class PostController extends Controller
 
     }
 
-    public function delete($id)
-    {
+    public function delete($id) {
         $datas = Post::find($id);
 
         if($datas){
@@ -90,8 +88,7 @@ class PostController extends Controller
         return response()->json(["message"=> "Falha na exclusão do registro {{id}}"], 400);
     }
 
-    
-    public function searchPost(Request $request){
+    public function searchPost(Request $request) {
         $post = $request->get("posts");
         if ($post) {
             $title = Post::where('title', 'like', '%' . $post . '%')->get();
@@ -101,8 +98,7 @@ class PostController extends Controller
         }
     }
 
-    public function addComent(Request $request,Post $post){
-
+    public function addComent(Request $request,Post $post) {
         $validator = Validator::make($request->all(),[
             "message" => "required",
         ]);
@@ -124,8 +120,7 @@ class PostController extends Controller
         return response()->json(["message"=> "Erro ao salvar"],500);
     }
 
-    public function deleteComent($postId, $comentId)
-    {
+    public function deleteComent($postId, $comentId) {
         $post = Post::findOrFail($postId);
         $coment = Coments::findOrFail($comentId);
 

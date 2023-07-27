@@ -4,20 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Like;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware("auth:api");
     }
 
-    public function like($id)
-    {
+    public function like($id) {
         $post = Post::findOrFail($id);
-
         $user = Auth::user();
 
         $existingLike = Like::where('user_id', $user->id)
@@ -38,11 +34,9 @@ class LikeController extends Controller
         return response()->json(['message' => 'Like adicionado com sucesso'], 200);
     }
 
-    public function dislike($id)
-    {
-        $post = Post::findOrFail($id);
-
+    public function dislike($id) {
         $user = Auth::user();
+        $post = Post::findOrFail($id);
 
         $existingDislike = Like::where('user_id', $user->id)
             ->where('post_id', $post->id)
@@ -62,8 +56,7 @@ class LikeController extends Controller
         return response()->json(['message' => 'Dislike adicionado com sucesso'], 200);
     }
 
-    public function countLikes($id)
-    {
+    public function countLikes($id) {
         $likesCount = Like::where('post_id', $id)
             ->where('type', 'L')
             ->count();
@@ -71,8 +64,7 @@ class LikeController extends Controller
         return response()->json(['message' => 'Likes', "quantidade" => $likesCount], 200);
     }
 
-    public function countDislikes($id)
-    {
+    public function countDislikes($id) {
         $dislikesCount = Like::where('post_id', $id)
             ->where('type', 'D')
             ->count();

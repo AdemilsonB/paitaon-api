@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Helper\ResponseHelper;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class AuthController extends Controller
 {
@@ -36,85 +32,12 @@ class AuthController extends Controller
         return response()->json(['status' => 'sucess', 'message' => $token], 200);
     }
 
-    public function register(Request $request){
-
-        $validator = Validator::make($request->all(),[
-            "name" => "required",
-            "email"=> "required|unique:users|email",
-            "password" => "required|confirmed",
-            "bio" => "required",
-            "image_perfil" => "image"
-        ]);
-
-        if($validator->fails()){
-            return response()->json($validator->errors(),403);
-        }
-
-        $user = new User($request->all());
-
-        $file_path = 'files/imagePerfil';
-        $extensionD = $request->all()['image_perfil']->getClientOriginalExtension();
-        $nameFileD = uniqid() . ".{$extensionD}";
-
-        $user->image_perfil = $nameFileD;
-
-        if($user->save()){
-            $uploadD = $request->all()['image_perfil']->storeAs($file_path, $nameFileD);
-
-            return response()->json(["message" => "Usuario salvo", "data" => $user->name],200);
-        }
-
-        return response()->json(["message"=> "Erro ao salvar"],500);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $data = $request->all();
-
-        if($data){
-            $file_path = 'files/image_perfil';
-            if ($request->hasFile('image_perfil')) {
-                $extension = $request->all()('image_perfil')->getClientOriginalExtension();
-                $nameFile = uniqid() . ".{$extension}";
-                $request->all()('image_perfil')->storeAs($file_path, $nameFile);
-                $data['image_perfil'] = $nameFile;
-            }
-
-            $user = User::find($id);
-            $user->update($data);
-
-            return response()->json(['message' => "Usuário editado com sucesso"], 200);
-        }
-
-        return response()->json(["message" => "Usuário não encontrado"], 404);
-
-    }
-
-    public function delete($id)
-    {
-        $datas = User::find($id);
-
-        if($datas){
-            if($datas->deleteImage());
-        }else{
-            return response()->json(['message' => "Usuário não encontrado"], 404);
-        }
-
-        if($datas->delete()){
-            return response()->json(["message"=> "Usuário deletado com sucesso"],200);
-        }
-
-        return response()->json(["message"=> "Falha na exclusão do usuário"], 400);
-    }
-
-    public function logout()
-    {
+    public function logout() {
         Auth::logout();
         return response()->json(['status' => 'success', 'message' => 'Successfully logged out']);
     }
 
-    public function refresh()
-    {
+    public function refresh() {
         return response()->json([
             'status' => 'success',
             'user' => Auth::user(),
@@ -124,5 +47,4 @@ class AuthController extends Controller
             ]
         ]);
     }
-
 }
