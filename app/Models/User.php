@@ -16,7 +16,9 @@ class User extends Authenticatable implements JWTSubject
     use HasFactory;
     use SoftDeletes;
 
-    const FILE_PATH = "files/imagePerfil";
+    const FILE_PATH = "files/imagePerfil/";
+
+    protected $table = "users";
 
     protected $fillable = [
         "name",
@@ -25,7 +27,6 @@ class User extends Authenticatable implements JWTSubject
         "bio",
         "image_perfil"
     ];
-
 
     protected $hidden = [
         "password"

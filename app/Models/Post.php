@@ -12,7 +12,9 @@ class Post extends Model
     use HasFactory;
     use SoftDeletes;
 
-    const FILE_PATH = "files/thumbnail";
+    const FILE_PATH = "files/thumbnail/";
+
+    protected $table = 'posts';
 
     protected $fillable = [
         "title",

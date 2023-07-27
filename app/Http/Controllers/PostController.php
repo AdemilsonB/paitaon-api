@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Coments;
-use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -92,6 +90,17 @@ class PostController extends Controller
         return response()->json(["message"=> "Falha na exclusão do registro {{id}}"], 400);
     }
 
+    
+    public function searchPost(Request $request){
+        $post = $request->get("posts");
+        if ($post) {
+            $title = Post::where('title', 'like', '%' . $post . '%')->get();
+            return response()->json(['title' => $title]);
+        } else {
+            return response()->json(['message' => 'Nenhum registro encontrado'], 400);
+        }
+    }
+
     public function addComent(Request $request,Post $post){
 
         $validator = Validator::make($request->all(),[
@@ -129,5 +138,4 @@ class PostController extends Controller
             return response()->json(['message' => 'Comentário não encontrado nesse post'], 404);
         }
     }
-
 }
