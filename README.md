@@ -1,7 +1,7 @@
 # Gamer On
 
 <h3>
-API desenvolvida com Laravel<br>
+API desenvolvida com PHP e framework Laravel<br>
 Desenvolvimento de API completa para uma rede social voltada para o mundo Gamer.
 </h3>
 
