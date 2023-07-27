@@ -35,7 +35,6 @@ class Post extends Model
         return $this->creator()->first("name","id");
     }
 
-
     public function coments(){
         return $this->hasMany(Coments::class,"post_id");
     }

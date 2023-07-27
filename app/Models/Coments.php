@@ -28,7 +28,6 @@ class Coments extends Model
         return $this->creator()->first("name","id");
     }
 
-
     public function post(){
         return $this->belongsTo(Post::class,"post_id");
     }
@@ -36,9 +35,4 @@ class Coments extends Model
     public function getPostAttribute(){
         return $this->post()->first("title","id");
     }
-
-
-
-
-
 }

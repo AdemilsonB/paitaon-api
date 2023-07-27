@@ -5,8 +5,6 @@ use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
-use App\Models\Followers;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
