@@ -18,6 +18,7 @@ class CreateComentsTable extends Migration
             $table->text("message");
             $table->foreignId("user_id")->references("id")->on("users");
             $table->foreignId("post_id")->references("id")->on("posts");
+            $table->index(['message']);
             $table->timestamps();
             $table->softDeletes();
         });
