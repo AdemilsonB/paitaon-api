@@ -30,7 +30,7 @@ class FollowersController extends Controller
         $follow->follower_id = $follower->id;
         $follow->save();
 
-        return response()->json(['message' => 'Você começou a seguir', 'user' => $user->name]);
+        return response()->json(['message' => 'Você começou a seguir', 'user' => $follower->name]);
     }
 
     public function unfollow($id) {
