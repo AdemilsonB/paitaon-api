@@ -6,33 +6,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Coments extends Model
+class Comments extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
     protected $fillable = [
-        "message"
+        'message'
     ];
 
     protected $appends = [
-        "creator",
+        'creator',
 
     ];
 
     public function creator(){
-        return $this->belongsTo(User::class,"user_id");
+        return $this->belongsTo(User::class,'user_id');
     }
 
     public function getCreatorAttribute(){
-        return $this->creator()->first("name","id");
+        return $this->creator()->first('name','id');
     }
 
     public function post(){
-        return $this->belongsTo(Post::class,"post_id");
+        return $this->belongsTo(Post::class,'post_id');
     }
 
     public function getPostAttribute(){
-        return $this->post()->first("title","id");
+        return $this->post()->first('title','id');
     }
 }

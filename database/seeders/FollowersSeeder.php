@@ -20,9 +20,9 @@ class FollowersSeeder extends Seeder
         $faker = Faker::create();
 
         $userIds = User::pluck('id')->all();
-        $followerIds = 13; // User::pluck('id')->all();
+        $followerIds = 42; // User::pluck('id')->all();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 11; $i++) {
             Followers::create([
                 'user_id' => $faker->randomElement($userIds),
                 'follower_id' => $followerIds // $faker->randomElement($followerIds),

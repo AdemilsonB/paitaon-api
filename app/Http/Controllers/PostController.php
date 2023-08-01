@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\Coments;
+use App\Models\Comments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class PostController extends Controller
 {
     public function __construct() {
-        $this->middleware("auth:api");
+        $this->middleware('auth:api', ['except' => 'searchPost']);
     }
 
     public function list() {
@@ -20,21 +20,21 @@ class PostController extends Controller
 
     public function create(Request $request) {
         $validator = Validator::make($request->all(),[
-            "title" => "required|unique:posts",
-            "body" => "required",
-            "thumbnail" => "image"
+            'title' => 'required|unique:posts',
+            'body' => 'required',
+            'thumbnail' => 'image'
         ]);
 
         if($validator->fails()) {
             return response()->json($validator->errors(),403);
         }
 
-        $user = Auth::guard("api")->user();
+        $user = Auth::guard('api')->user();
         $post = new Post($request->all());
 
         $file_path = 'files/thumbnail';
         $extensionD = $request->all()['thumbnail']->getClientOriginalExtension();
-        $nameFileD = uniqid() . ".{$extensionD}";
+        $nameFileD = uniqid() . '.{$extensionD}';
 
         $post->thumbnail = $nameFileD;
 
@@ -42,10 +42,10 @@ class PostController extends Controller
         if($post->save()){
             $uploadD = $request->all()['thumbnail']->storeAs($file_path, $nameFileD);
 
-            return response()->json(["message" => "Post salvo", "data" => $post],200);
+            return response()->json(['message' => 'Post salvo', 'data' => $post],200);
         }
 
-        return response()->json(["message"=> "Erro ao salvar"],500);
+        return response()->json(['message'=> 'Erro ao salvar'],500);
     }
 
     public function update(Request $request, $id) {
@@ -58,17 +58,17 @@ class PostController extends Controller
             $file_path = 'files/thumbnail';
             if ($request->hasFile('thumbnail')) {
                 $extension = $request->all()('thumbnail')->getClientOriginalExtension();
-                $nameFile = uniqid() . ".{$extension}";
+                $nameFile = uniqid() . '.{$extension}';
                 $request->all()('thumbnail')->storeAs($file_path, $nameFile);
                 $data['thumbnail'] = $nameFile;
             }
 
             $post->update($data);
 
-            return response()->json(['message' => "Registro editado com sucesso"], 200);
+            return response()->json(['message' => 'Registro editado com sucesso'], 200);
         }
 
-        return response()->json(["message" => "Registro não encontrado"], 404);
+        return response()->json(['message' => 'Registro não encontrado'], 404);
 
     }
 
@@ -78,18 +78,18 @@ class PostController extends Controller
         if($datas){
             if($datas->deleteThumbnail());
         }else{
-            return response()->json(['message' => "Registro não encontrado"], 404);
+            return response()->json(['message' => 'Registro não encontrado'], 404);
         }
 
         if($datas->delete()){
-            return response()->json(["message"=> "Registro deletado com sucesso"],200);
+            return response()->json(['message'=> 'Registro deletado com sucesso'],200);
         }
 
-        return response()->json(["message"=> "Falha na exclusão do registro {{id}}"], 400);
+        return response()->json(['message'=> 'Falha na exclusão do registro {{id}}'], 400);
     }
 
     public function searchPost(Request $request) {
-        $post = $request->get("posts");
+        $post = $request->get('posts');
         if ($post) {
             $title = Post::where('title', 'like', '%' . $post . '%')->get();
             return response()->json(['title' => $title]);
@@ -100,33 +100,33 @@ class PostController extends Controller
 
     public function addComent(Request $request,Post $post) {
         $validator = Validator::make($request->all(),[
-            "message" => "required",
+            'message' => 'required',
         ]);
 
         if($validator->fails()){
             return response()->json($validator->errors(),403);
         }
 
-        $user = Auth::guard("api")->user();
+        $user = Auth::guard('api')->user();
 
-        $coment = new Coments($request->all());
-        $coment->creator()->associate($user);
-        $coment->post()->associate($post);
+        $comment = new Comments($request->all());
+        $comment->creator()->associate($user);
+        $comment->post()->associate($post);
 
-        if($coment->save()){
-            return response()->json(["message" => "comentario salvo", "data" => $coment],200);
+        if($comment->save()){
+            return response()->json(['message' => 'comentario salvo', 'data' => $comment],200);
         }
 
-        return response()->json(["message"=> "Erro ao salvar"],500);
+        return response()->json(['message'=> 'Erro ao salvar'],500);
     }
 
     public function deleteComent($postId, $comentId) {
         $post = Post::findOrFail($postId);
-        $coment = Coments::findOrFail($comentId);
+        $comment = Comments::findOrFail($comentId);
 
         // Verificar se o comentário pertence ao post
-        if ($coment->post_id == $post->id) {
-            $coment->delete();
+        if ($comment->post_id == $post->id) {
+            $comment->delete();
 
             return response()->json(['message' => 'Comentário excluído com sucesso'], 200);
         } else {

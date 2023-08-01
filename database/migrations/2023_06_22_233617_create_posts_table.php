@@ -20,6 +20,7 @@ class CreatePostsTable extends Migration
             $table->string("thumbnail")->nullable(true);
             $table->foreignId("user_id")->references("id")->on("users");
             $table->integer("like")->default(0);
+            $table->unsignedBigInteger('shared_post_id')->nullable();
             $table->index(['title', 'body']);
             $table->timestamps();
             $table->softDeletes();

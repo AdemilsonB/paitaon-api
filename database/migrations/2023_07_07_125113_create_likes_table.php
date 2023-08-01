@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Likes extends Migration
+class CreateLikesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +17,7 @@ class Likes extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('post_id')->constrained('posts');
-            $table->enum('type', ['L', 'D']); //L = Like --- D = Dislike
+            $table->enum('type', ['L', 'D']); // L = Like | D = Dislike
             $table->timestamps();
         });
     }
