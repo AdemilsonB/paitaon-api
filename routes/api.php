@@ -41,8 +41,8 @@ Route::prefix('posts')->middleware('auth')->group(function(){
     Route::put('/{id}', [PostController::class, 'update']);
     Route::delete('/{id}', [PostController::class, 'delete']);
 
-    Route::post('{post}/addComent', [PostController::class,'addComent']);
-    Route::delete('{postId}/deleteComent/{comentId}', [PostController::class,'deleteComent']);
+    Route::post('{post}/addComment', [PostController::class,'addComment']);
+    Route::delete('{postId}/deleteComment/{commentId}', [PostController::class,'deleteComment']);
 });
 
 //LIKE

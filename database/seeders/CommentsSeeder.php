@@ -8,7 +8,7 @@ use App\Models\Comments;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
-class ComentsSeeder extends Seeder
+class CommentsSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -98,7 +98,7 @@ class PostController extends Controller
         }
     }
 
-    public function addComent(Request $request,Post $post) {
+    public function addComment(Request $request,Post $post) {
         $validator = Validator::make($request->all(),[
             'message' => 'required',
         ]);
@@ -114,15 +114,15 @@ class PostController extends Controller
         $comment->post()->associate($post);
 
         if($comment->save()){
-            return response()->json(['message' => 'comentario salvo', 'data' => $comment],200);
+            return response()->json(['message' => 'Comentário salvo', 'data' => $comment],200);
         }
 
         return response()->json(['message'=> 'Erro ao salvar'],500);
     }
 
-    public function deleteComent($postId, $comentId) {
+    public function deleteComment($postId, $commentId) {
         $post = Post::findOrFail($postId);
-        $comment = Comments::findOrFail($comentId);
+        $comment = Comments::findOrFail($commentId);
 
         // Verificar se o comentário pertence ao post
         if ($comment->post_id == $post->id) {

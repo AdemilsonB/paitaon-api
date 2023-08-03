@@ -39,7 +39,7 @@ class Post extends Model
         return $this->hasMany(Comments::class,'post_id');
     }
 
-    public function getComentsAttribute(){
+    public function getCommentsAttribute(){
         return $this->comments()->get('message');
     }
 
