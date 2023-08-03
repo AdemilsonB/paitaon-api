@@ -32,7 +32,7 @@ class UserController extends Controller
 
         $file_path = 'files/imagePerfil';
         $extensionD = $request->all()['image_perfil']->getClientOriginalExtension();
-        $nameFileD = uniqid() . '.{$extensionD}';
+        $nameFileD = uniqid() . ".{$extensionD}";
 
         $user->image_perfil = $nameFileD;
 

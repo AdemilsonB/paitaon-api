@@ -34,7 +34,7 @@ class PostController extends Controller
 
         $file_path = 'files/thumbnail';
         $extensionD = $request->all()['thumbnail']->getClientOriginalExtension();
-        $nameFileD = uniqid() . '.{$extensionD}';
+        $nameFileD = uniqid() . ".{$extensionD}";
 
         $post->thumbnail = $nameFileD;
 
